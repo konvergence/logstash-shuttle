@@ -1,0 +1,10 @@
+version: '2'
+volumes:
+  es_data: {}
+services:
+  es:
+    image: registry.shuttle-cloud.com:5000/slaheddinne.ahmed/slassh/elasticsearch:1.0
+    volumes:
+    - es_data:/usr/share/elasticsearch/data
+    ports:
+    - 9200:9200/tcp

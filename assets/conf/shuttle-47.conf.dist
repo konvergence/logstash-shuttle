@@ -34,10 +34,8 @@ filter {
 		remove_field => ["message"]
 	}
 
-		if ( "" in [SESSION] ){ mutate {
-				replace => ["SESSION",'null'] 
-		}}
-		if ( "" in [USER] ) { mutate {
+		if ( "Invalid credentials" in [ERROR] ){ mutate {
+				replace => ["SESSION",'null']
 				replace => ["USER",'null']
 		}}
        if ( "CEST" in [START_DATE]){

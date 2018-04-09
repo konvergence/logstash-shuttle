@@ -4,9 +4,9 @@
 **Logstash-shuttle** is a docker image  based on [logstash](https://hub.docker.com/r/library/logstash/tags/) official image and customized to parse and treat **Shuttle** logs as event streams for later analysis . 
 For further reading please refer to https://12factor.net/logs.
 
-The image is aimed to be used along side  a Shuttle server and points to it's log directory , but in order to produce an [ephemeral](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#containers-should-be-ephemeral) container you can use it with only a named volume.
+The image is aimed to be used along side  a Shuttle server and shares it's log directory , but in order to produce an [ephemeral](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#containers-should-be-ephemeral) container you can use it with only a named volume.
 ```yaml
-registry.shuttle-cloud.com:5000/slaheddinne.ahmed/logstash-shuttle:1.0.1
+registry.shuttle-cloud.com:5000/slaheddinne.ahmed/logstash-shuttle:1.0.3
 ``` 
 ## Usage
 #### Available commands  : 
@@ -20,7 +20,8 @@ registry.shuttle-cloud.com:5000/slaheddinne.ahmed/logstash-shuttle:1.0.1
 |  EL_PORT| Elasticsearch port  |9200|
 | SHUTTLE_VERSION| Specifies the shuttle version. 47 for 4.7 , 48 for 4.8 etc  |47|
 |  FILE_DIR| Specifies the directory where logs are located in shuttle volume |/data/shuttle/home/logs/audit. The default Shuttle audit directory|
-|  FILE_NAME| Specifies the file(s) to be parsed/treated. you can use regex |'ShuttleAudit.csv.2018*'|
+|  AUDIT_FILES| Specifies the audit file(s) to be parsed/treated. you can use regex |'audit/ShuttleAudit.csv'|
+|USERS_FILES|Specifies users declared file(s) to be parsed/treated. you can use regex|'users/users'|
 |  EL_INDEX|elasticsearch index where logs will be stored|staging_prod|
 |  OUTPUT_ONLY| If set to true you will get the logs in the standard output else to elasticsearch |false|
 |  SINCE_DB| Set it to `sincedb_path => "/dev/null"` to force logstash-shuttle to read files from the begining even if they have been seen already.|
@@ -59,7 +60,7 @@ docker-compose up -d
 
 This section aims to describe how to check if everything works as expected.
 
-1 -  Run `docker ps `, you should be able to see 4 running containers (Shuttle server, Postgres , Logstash-shuttle and Elasticsearch).
+1 -  Run `docker ps `, you should be able to see 4 running containers (Shuttle server, Postgres , Logstash-shuttle and Elasticsearch).  
 2 - Check **logstash-shuttle** logs with `docker logs shuttle_logstash_1` , to see if elasticsearch and logstash-shuttle are linked. 
 > INFO  logstash.outputs.elasticsearch - New Elasticsearch output {:class=>"LogStash::Outputs::ElasticSearch", :hosts=>["//es:9200"]}
 > INFO  logstash.agent - Successfully started Logstash API endpoint {:port=>9600}
@@ -73,14 +74,3 @@ I use [Github](https://github.com/) for versioning. For the versions available, 
 
 * **Slaheddinne Ahmed** 
 Contact : slaheddinne.ahmed@kshuttle.io
-
-## Flow chart
-
-```mermaid
-graph LR
-A[Shuttle server]
-A --> B{Logstash-shuttle}
-B --> C(Elasticsearch)
-B --> D(Output Only)
-C --> E(Grafana dashboards) 
-```

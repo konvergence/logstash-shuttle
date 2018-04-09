@@ -1,19 +1,27 @@
 input {
 
    file {
-		path => "${FILE_DIR}/${FILE_NAME}*"
+		path => "${FILE_DIR}/${AUDIT_FILES}*"
 		start_position => "beginning"
+		type => "audit"
 		${SINCE_DB}
+   }
+      file {
+	  path => "${FILE_DIR}/${USERS_FILES}*"
+	  start_position => "beginning"
+	  ${SINCE_DB}
+	  type => "users"
    }
 
 }
 filter {
     if [message] =~ /^\s*$/ { drop { } } #drop events null rows
-	
+
+ if [type] == "audit"{
 	mutate {
 		gsub => ["message", "^'", ""] # replace ' with ""
 	}
-    fingerprint {
+	    fingerprint {
 		source => "message"
 		target => "fingerprint"
 		method => "SHA1"
@@ -26,26 +34,84 @@ filter {
 		remove_field => ["message"]
 	}
 
-	date{                      #Jan 6, 2018 12:50:16 AM CET	
-		match => ["START_DATE","MMM dd, YYYY hh:mm:ss aa ZZZ"]
-		target => "START_DATE"
-	}
-		date{				  #Feb 11, 2018 12:00:20 AM CET fails
-		match => ["END_DATE","MMM dd, YYYY hh:mm:ss aa ZZZ"]
-		target => "END_DATE"
-	}
+		if ( "" in SESSION ){mutate {
+				replace => ["SESSION",'null'] 
+		}}
+		if ( "" in USER ) {mutate {
+				replace => ["USER",'null']
+		}}
+       if ( "CEST" in [START_DATE]){
+		 mutate {
+		    gsub => ["START_DATE", "CEST", "+0200"]
+		    gsub => ["END_DATE", "CEST", "+0200"]
+      }
+	  date{                      #Jan 6, 2018 12:50:16 AM CEST	
+			match => ["START_DATE","MMM dd, YYYY hh:mm:ss aa Z"]
+			target => "START_DATE"
+		}
+			date{
+			match => ["END_DATE","MMM dd, YYYY hh:mm:ss aa Z"]
+			target => "END_DATE"
+		}
+		}
+		else {
+		date{                      #Jan 6, 2018 12:50:16 AM CET	
+			match => ["START_DATE","MMM dd, YYYY hh:mm:ss aa ZZZ"]
+			target => "START_DATE"
+		}
+			date{
+			match => ["END_DATE","MMM dd, YYYY hh:mm:ss aa ZZZ"]
+			target => "END_DATE"
+		}
+		 
+		}
 	mutate {
-		replace => ["CLIENT","${STACK_CLIENT}"] # replace ' with ""
+		replace => ["CLIENT","${STACK_CLIENT}"] 
 	}
 	ruby {
         code => "event.set('DURATION_S', event.get('END_DATE') - event.get('START_DATE'))"
      }
+}
+	if [type] == "users"{
+	   grok {
+			match => ["path", "(?<ADDED_DATE>%{YEAR}-%{MONTHNUM}-%{MONTHDAY}_%{HOUR}-%{MINUTE}-%{SECOND})"]
+		}
+	   csv {
+			separator => ","
+			columns => ["USER","ADDED_DATE","COUNT","CLIENT","fingerprint"]
+			remove_field => ["message"]
+	   }
+		date{                      #Jan 6, 2018 12:50:16 AM CET	
+			match => ["ADDED_DATE","YYYY-MM-dd_HH-mm-ss"]
+			target => "ADDED_DATE"
+		}
+		mutate {
+				replace => ["CLIENT","${STACK_CLIENT}"]
+		}
+			mutate {
+				replace => ["COUNT", 0]
+		}
+				mutate {
+				replace => ["type",'audit']
+		}
+	  mutate { remove_field => [ "host", "@version" ] }
 
+	}
 }
 output{
+	if [fingerprint]{
 	elasticsearch{
 		hosts => "${EL_HOST}:${EL_PORT}"
 		index => "${EL_INDEX}"
 		document_id=>"%{fingerprint}"
 	}
+	}
+	else {
+       	elasticsearch{
+		hosts => "${EL_HOST}:${EL_PORT}"
+		index => "${EL_INDEX}"
+		document_id=>"%{USER}.%{ADDED_DATE}.%{CLIENT}"
+	}	
+	}
+	
 }

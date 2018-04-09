@@ -34,10 +34,10 @@ filter {
 		remove_field => ["message"]
 	}
 
-		if ( "" in SESSION ){mutate {
+		if ( "" in SESSION ){ mutate {
 				replace => ["SESSION",'null'] 
 		}}
-		if ( "" in USER ) {mutate {
+		if ( "" in USER ) { mutate {
 				replace => ["USER",'null']
 		}}
        if ( "CEST" in [START_DATE]){

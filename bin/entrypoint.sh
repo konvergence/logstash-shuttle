@@ -7,11 +7,10 @@ then
 else
 	apt-get update
 	apt-get install -y gettext-base
-	if [ $1 = "--run" ] && [ $OUTPUT_ONLY = "true" ]
+	if [ $1 = "--run" ] && [ $OUTPUT_ONLY = "true" ] #debug mode
 	then
-		envsubst < /config-dir/debug_shuttle-"$SHUTTLE_VERSION".conf.dist > /config-dir/logstash.conf
-		#if [ $DEBUG ] 
-	elif [ $1 = "--run" ] && [ $OUTPUT_ONLY = "false" ]
+		envsubst < /config-dir/debug_shuttle-"$SHUTTLE_VERSION".conf.dist > /config-dir/logstash.conf 
+	elif [ $1 = "--run" ] && [ $OUTPUT_ONLY = "false" ] #elasticsearch mode
 	then
 		envsubst < /config-dir/shuttle-"$SHUTTLE_VERSION".conf.dist > /config-dir/logstash.conf
 	fi

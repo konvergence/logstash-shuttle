@@ -2,6 +2,16 @@ FROM logstash:5.6.7
 
 MAINTAINER Slaheddinne Ahmed, slaheddinne.ahmed@kshuttle.io
 
+RUN apt-get update \
+    && apt-get install -y gettext-base \
+    && echo "#### clean " \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /tmp/*
+
+     
+
+
 COPY /assets/conf/ /config-dir/
 #COPY USAGE.md    /config-dir/
 

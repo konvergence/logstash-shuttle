@@ -71,28 +71,25 @@ filter {
 }
 	if [type] == "users"{
 	   grok {
-			match => ["path", "(?<ADDED_DATE>%{YEAR}-%{MONTHNUM}-%{MONTHDAY}_%{HOUR}-%{MINUTE}-%{SECOND})"]
+			match => ["path", "(?<ADDED_DATE>%{YEAR}-%{MONTHNUM}-%{MONTHDAY}_%{HOUR}-%{MINUTE}-%{SECOND})"]	
 		}
+		mutate { replace => ["ADDED_DATE","%{ADDED_DATE} +0200"] } # Add CEST timezone for declared users 
+	   
 	   csv {
 			separator => ","
 			columns => ["USER","ADDED_DATE","COUNT","CLIENT","fingerprint"]
 			remove_field => ["message"]
-	   }
+	    }
+
+		mutate { replace => ["CLIENT","${STACK_CLIENT}"] }
+		mutate { replace => ["COUNT", 0] }
+		mutate { replace => ["type",'audit'] }
+	    mutate { remove_field => [ "host", "@version" ] }
+		
 		date{                      #Jan 6, 2018 12:50:16 AM CET	
-			match => ["ADDED_DATE","YYYY-MM-dd_HH-mm-ss"]
+			match => ["ADDED_DATE","YYYY-MM-dd_HH-mm-ss Z"]
 			target => "ADDED_DATE"
 		}
-		mutate {
-				replace => ["CLIENT","${STACK_CLIENT}"]
-		}
-			mutate {
-				replace => ["COUNT", 0]
-		}
-				mutate {
-				replace => ["type",'audit']
-		}
-	  mutate { remove_field => [ "host", "@version" ] }
-
 	}
 }
 output{

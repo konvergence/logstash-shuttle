@@ -4,11 +4,9 @@ volumes:
   shuttle-data: {}
 services:
   logstash:
-    image: registry.shuttle-cloud.com:5000/slaheddinne.ahmed/logstash-shuttle:1.0.1
+    image: registry.shuttle-cloud.com:5000/slaheddinne.ahmed/logstash-shuttle:1.0.4
     environment:
       EL_HOST: es
-      FILE_NAME: ''
-      FILE_DIR: /data/shuttle/home/logs/audit
       EL_INDEX: test_index
     networks:
       - default

@@ -4,7 +4,7 @@ volumes:
   shuttle-data: {}
 services:
   logstash:
-    image: registry.shuttle-cloud.com:5000/slaheddinne.ahmed/logstash-shuttle:1.0.3
+    image: registry.shuttle-cloud.com:5000/slaheddinne.ahmed/logstash-shuttle:1.0.4
     environment:
       EL_HOST: es
       EL_INDEX: test_index

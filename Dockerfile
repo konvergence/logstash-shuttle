@@ -10,10 +10,10 @@ COPY /assets/conf/ /config-dir/
 ENV STACK_CLIENT=mystack \
     EL_HOST=es \
 	EL_PORT=9200 \
-	SHUTTLE_VERSION=47 \
-	FILE_DIR=/data/shuttle/home/logs \
-	AUDIT_FILES='audit/ShuttleAudit.csv' \
-	USERS_FILES='users/users' \
+	LOG_VERSION=47 \
+	LOG_BASE_DIR=/data/shuttle/home/logs \
+	AUDIT_FILES=audit/ShuttleAudit.csv \
+	USERS_FILES=users/users \
 	EL_INDEX=staging_prod \
 	OUTPUT_ONLY=false \
 	SINCE_DB= \

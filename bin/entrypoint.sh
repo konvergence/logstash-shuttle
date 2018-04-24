@@ -1,12 +1,9 @@
 #!/bin/sh
 
-
 if [ "$1" = "--help" ]
 then
 	echo "hello  this is help me file \n please refer to the image maintainer (slaheddinne)  "
 else
-	apt-get update
-	apt-get install -y gettext-base
 	if [ $1 = "--run" ] && [ $OUTPUT_ONLY = "true" ] #debug mode
 	then
 		envsubst < /config-dir/debug_shuttle-"$SHUTTLE_VERSION".conf.dist > /config-dir/logstash.conf 

@@ -2,7 +2,7 @@
 
 if [ "$1" = "--help" ]
 then
-	echo "hello  this is help me file \n please refer to the image maintainer (slaheddinne)  "
+	cat  README.md
 else
 	if [ $1 = "--run" ] && [ $OUTPUT_ONLY = "true" ] #debug mode
 	then
@@ -15,4 +15,4 @@ else
 #cat /config-dir/$LOGSTASH_CONF
 	logstash $LOGSTASH_OPTIONS -f /config-dir/logstash.conf
 
-fi	
+fi

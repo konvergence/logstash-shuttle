@@ -114,13 +114,13 @@ filter {
 output{
 	if [fingerprint]{ # exist only for audit
     	elasticsearch{
-		    ssl => true
-			ssl_certificate_verification => false
+		    ssl => ${EL_SSL}
+			ssl_certificate_verification => ${SSl_VERIF_CERT}
 			hosts => "${EL_HOST}:${EL_PORT}"
 			index => "${EL_INDEX}"
 			document_id=>"%{fingerprint}"
-			user => logstash
-			password=>logstash
+			user => ${EL_USER} # logstash user for elasticsearch
+			password=>${EL_PASSWORD} #logstash password for elasticsearch
 	    }
 	} else { #for user, force id 
        	elasticsearch{
@@ -128,8 +128,8 @@ output{
 			index => "${EL_INDEX}"
 			document_id=>"%{USER}.%{ADDED_DATE}.%{CLIENT}"
 			document_type=>"audit" # force to store tags users into the same index  _type  like audit to allow dashboard
-			user => logstash
-			password=>logstash
+			user => ${EL_USER} # logstash user for elasticsearch
+			password=>${EL_PASSWORD} #logstash password for elasticsearch
 	    }	
 	}
 	

@@ -84,7 +84,7 @@ filter {
 	
 	mutate { replace => ["CLIENT","${STACK_CLIENT}"] }
 	ruby { code => "event.set('DURATION_S', event.get('END_DATE') - event.get('START_DATE'))" }  # date diff to compute duration in secondes 
-	ruby { code => "event.set('DURATION', Time.at(event.get('DURATION_S')).utc.strftime("%H:%M:%S"))" }
+	ruby { code => "event.set('DURATION', Time.at(event.get('DURATION_S')).utc.strftime('%H:%M:%S))" }
 	 
 }
 	if [type] == "users"{ 

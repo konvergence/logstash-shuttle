@@ -84,7 +84,7 @@ filter {
 	
 	mutate { replace => ["CLIENT","${STACK_CLIENT}"] }
 	ruby { code => "event.set('DURATION_S', event.get('END_DATE') - event.get('START_DATE'))" }  # date diff to compute duration in secondes 
-	ruby { code => "event.set('DURATION', Time.at(event.get('DURATION_S')).utc.strftime("%H:%M:%S"))" }
+	ruby { code => "event.set('DURATION', Time.at(event.get('DURATION_S')).utc.strftime('%H:%M:%S'))" }
 	 
 }
 	if [type] == "users"{ 
@@ -115,7 +115,7 @@ output{
 	if [fingerprint]{ # exist only for audit
     	elasticsearch{
 		    ssl => ${EL_SSL}
-			ssl_certificate_verification => ${SSl_VERIF_CERT}
+			ssl_certificate_verification => ${EL_SSL_VERIF_CERT}
 			hosts => "${EL_HOST}:${EL_PORT}"
 			index => "${EL_INDEX}"
 			document_id=>"%{fingerprint}"
@@ -124,6 +124,8 @@ output{
 	    }
 	} else { #for user, force id 
        	elasticsearch{
+			ssl => ${EL_SSL}
+			ssl_certificate_verification => ${EL_SSL_VERIF_CERT}
 			hosts => "${EL_HOST}:${EL_PORT}"
 			index => "${EL_INDEX}"
 			document_id=>"%{USER}.%{ADDED_DATE}.%{CLIENT}"
@@ -132,5 +134,5 @@ output{
 			password=>${EL_PASSWORD} #logstash password for elasticsearch
 	    }	
 	}
-	
+
 }

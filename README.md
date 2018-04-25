@@ -35,7 +35,7 @@ registry.shuttle-cloud.com:5000/slaheddinne.ahmed/logstash-shuttle:1.0.3
 | EL_PASSWORD|elasticsearch index where logs will be stored|`staging_prod`|
 | EL_SSL|enable ssl communication with eslasticsearch  |`true` |
 | EL_SSL_VERIF_CERT|enable ssl certificate verification|`false`|
-| LOG_VERSION| Specifies logs version |`V01`|
+| LOG_VERSION| Specifies logs version |`v01`|
 | LOG_BASE_DIR| Specifies the directory where logs are located in shuttle volume |`/data/shuttle/home/logs`.|
 | AUDIT_FILES| Specifies the audit file(s) to be parsed/treated. you can use regex |`audit/ShuttleAudit.csv`|
 |USERS_FILES|Specifies users declared file(s) to be parsed/treated. you can use regex|`users/users`|
@@ -45,7 +45,7 @@ registry.shuttle-cloud.com:5000/slaheddinne.ahmed/logstash-shuttle:1.0.3
 #### Logs versions & shuttle compatibility
 |Logs version| shuttle vesions 
 |--|--|--|
-| V01|  shuttle 4.5+ |
+| v01|  shuttle 4.5+ |
 ## Getting Started
 
 These instructions will get you a copy of the project on your local machine for development and testing purposes.

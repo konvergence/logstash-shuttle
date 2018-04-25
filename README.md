@@ -41,7 +41,7 @@ registry.shuttle-cloud.com:5000/slaheddinne.ahmed/logstash-shuttle
 | SINCE_DB| Set it to `sincedb_path => "/dev/null"` to force logstash-shuttle to read files from the begining even if they have been seen already.|
 
 #### Logs versions & shuttle compatibility
-|Logs version| shuttle vesions 
+|Logs version| shuttle vesions |
 |--|--|--|
 | v01|  shuttle 4.5+ |
 ## Getting Started

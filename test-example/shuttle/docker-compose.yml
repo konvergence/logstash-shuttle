@@ -4,7 +4,7 @@ volumes:
   shuttle-data: {}
 services:
   logstash:
-    image: registry.shuttle-cloud.com:5000/slaheddinne.ahmed/logstash-shuttle:1.0.4
+    image: registry.shuttle-cloud.com:5000/slaheddinne.ahmed/logstash-shuttle
     environment:
       EL_HOST: es
       EL_PORT: 9243

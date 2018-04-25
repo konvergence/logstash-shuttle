@@ -1,10 +1,21 @@
-version: '2'
+version: '2.1'
 volumes:
-  es_data: {}
+ elasticsearch_data: {}
 services:
   es:
-    image: registry.shuttle-cloud.com:5000/slaheddinne.ahmed/slassh/elasticsearch:1.0
+    image: registry.shuttle-cloud.com:5000/slaheddinne.ahmed/elasticsearch
     volumes:
-    - es_data:/usr/share/elasticsearch/data
+    - elasticsearch_data:/usr/share/elasticsearch/data
+    environment:
+      SSL_ENABLE: 'true'
+      ES_PORT: 9243
+      KEYSTORE_FILE_PATH: config/keystore.jks 
+      KEYSTORE_PASSWORD: changeit 
+      KEY_PASSWORD: changeit 
+      CLUSTER_ADMIN: es_admin 
+      ADMIN_PASS: passwadmin 
+      RO_USER: es_ro 
+      RO_PASS: password
+      
     ports:
-    - 9200:9200/tcp
+    - 9200:9234

@@ -1,6 +1,4 @@
 
-<![endif]-->
-
 # Logstash-shuttle
 
 **Logstash-shuttle** is a docker image based on [logstash]([https://hub.docker.com/r/library/logstash/tags/](https://hub.docker.com/r/library/logstash/tags/)) official image and customized to parse and treat **Shuttle** logs as event streams for later analysis .
@@ -11,7 +9,7 @@ The image is aimed to be used along side a Shuttle server and shares it's log di
 
 ```yaml
 
-registry.shuttle-cloud.com:5000/slaheddinne.ahmed/logstash-shuttle:1.0.3
+registry.shuttle-cloud.com:5000/slaheddinne.ahmed/logstash-shuttle
 
 ```
 

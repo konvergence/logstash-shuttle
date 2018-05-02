@@ -13,24 +13,29 @@ RUN apt-get update \
 
 
 COPY /assets/conf/ /config-dir/
-#COPY USAGE.md    /config-dir/
+COPY README.md    /config-dir/
 
 # metadata
 
 ENV STACK_CLIENT=mystack \
     EL_HOST=es \
-	EL_PORT=9200 \
-	SHUTTLE_VERSION=47 \
-	FILE_DIR=/data/shuttle/home/logs \
-	AUDIT_FILES='audit/ShuttleAudit.csv' \
-	USERS_FILES='users/users' \
-	EL_INDEX=staging_prod \
-	OUTPUT_ONLY=false \
-	SINCE_DB= \
-	LOGSTASH_OPTIONS=
-			
+    EL_PORT=9200 \
+    EL_INDEX=staging_prod \
+    EL_USER=logstash \
+    EL_PASSWORD=logstash \
+    EL_SSL=true \
+    EL_SSL_VERIF_CERT=false\
+    LOG_VERSION=v01 \
+    LOG_BASE_DIR=/data/shuttle/home/logs \
+    AUDIT_FILES=audit/ShuttleAudit.csv \
+    USERS_FILES=users/users \
+    OUTPUT_ONLY=false \
+    SINCE_DB= \
+    LOGSTASH_OPTIONS=
+            
 WORKDIR /config-dir
 VOLUME [ "/config-dir" ]
 COPY /bin/entrypoint.sh /bin/entrypoint.sh
 ENTRYPOINT ["/bin/entrypoint.sh"]
 CMD ["--help"]
+

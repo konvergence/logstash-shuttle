@@ -42,7 +42,7 @@ registry.shuttle-cloud.com:5000/slaheddinne.ahmed/logstash-shuttle
 
 #### Logs versions & shuttle compatibility
 |Logs version| shuttle vesions |
-|--|--|--|
+|--|--|
 | v01|  shuttle 4.5+ |
 ## Getting Started
 

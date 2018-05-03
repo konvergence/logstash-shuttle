@@ -1,4 +1,5 @@
 
+
 # Logstash-shuttle
 
 **Logstash-shuttle** is a docker image based on [logstash]([https://hub.docker.com/r/library/logstash/tags/](https://hub.docker.com/r/library/logstash/tags/)) official image and customized to parse and treat **Shuttle** logs as event streams for later analysis .
@@ -25,24 +26,24 @@ registry.shuttle-cloud.com:5000/slaheddinne.ahmed/logstash-shuttle
 
 |Variable |Description |Default value |
 |--|--|--|
-| STACK_CLIENT| Identifies a client logs |`mystack` |
-| EL_HOST| Elasticsearch host |`es`|
-| EL_PORT| Elasticsearch port |`9200`|
-| EL_INDEX|elasticsearch index where logs will be stored|`staging_prod`|
-| EL_USER|elasticsearch index where logs will be stored|`staging_prod`|
-| EL_PASSWORD|elasticsearch index where logs will be stored|`staging_prod`|
-| EL_SSL|enable ssl communication with eslasticsearch  |`true` |
-| EL_SSL_VERIF_CERT|enable ssl certificate verification|`false`|
-| LOG_VERSION| Specifies logs version |`v01`|
-| LOG_BASE_DIR| Specifies the directory where logs are located in shuttle volume |`/data/shuttle/home/logs`.|
-| AUDIT_FILES| Specifies the audit file(s) to be parsed/treated. you can use regex |`audit/ShuttleAudit.csv`|
-|USERS_FILES|Specifies users declared file(s) to be parsed/treated. you can use regex|`users/users`|
-| OUTPUT_ONLY| If set to true you will get the logs in the standard output else to elasticsearch |`false`|
+| STACK_CLIENT| Identifies a client logs. |`mystack` |
+| EL_HOST| Elasticsearch host. |`es`|
+| EL_PORT| Elasticsearch port. |`9200`|
+| EL_INDEX|elasticsearch index where logs will be stored.|`staging_prod`|
+| EL_USER|elasticsearch index where logs will be stored.|`logstash`|
+| EL_PASSWORD|elasticsearch index where logs will be stored.|`logstash`|
+| EL_SSL|enable ssl communication with eslasticsearch.  |`true` |
+| EL_SSL_VERIF_CERT|enable ssl certificate verification.|`false`|
+| LOG_VERSION| Specifies logs version. |`v01`|
+| LOG_BASE_DIR| Specifies the directory where logs are located in shuttle volume .|`/data/shuttle/home/logs`.|
+| AUDIT_FILES| Specifies the audit file(s) to be parsed/treated. you can use regex . LOG_BASE_DIR/AUDIT_FILES|`audit/ShuttleAudit.csv`|
+|USERS_FILES|Specifies users declared file(s) to be parsed/treated. you can use regex. LOG_BASE_DIR/USERS_FILES|`users/users`|
+| OUTPUT_ONLY| If set to true you will get the logs in the standard output else to elasticsearch. |`false`|
 | SINCE_DB| Set it to `sincedb_path => "/dev/null"` to force logstash-shuttle to read files from the begining even if they have been seen already.|
 
 #### Logs versions & shuttle compatibility
-|Logs version| shuttle vesions |
-|--|--|--|
+|Logs version| shuttle vesions|
+|--|--|
 | v01|  shuttle 4.5+ |
 ## Getting Started
 

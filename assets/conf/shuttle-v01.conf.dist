@@ -1,7 +1,7 @@
 input {
 
    file {
-	path => "${FILE_DIR}/${AUDIT_FILES}*"
+	path => "${LOG_BASE_DIR}/${AUDIT_FILES}*"
 	start_position => "beginning"
 	type => "audit"
 		
@@ -10,7 +10,7 @@ input {
    }
    
    file {
-	  path => "${FILE_DIR}/${USERS_FILES}*"
+	  path => "${LOG_BASE_DIR}/${USERS_FILES}*"
 	  start_position => "beginning"
 	  type => "users"
 	  

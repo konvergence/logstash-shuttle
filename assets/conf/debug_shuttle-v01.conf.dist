@@ -46,7 +46,7 @@ filter {
 			replace => ["SESSION",'null']
 	        replace => ["USER",'null']
 			replace => ["IP",'null']
-	        replace => ["USER",'null']
+	        replace => ["ORIGIN",'null']
 			replace => ["REPO",'null']
 	        replace => ["PROJECT",'null']
 	        replace => ["TARGET",'null']

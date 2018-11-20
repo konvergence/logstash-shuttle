@@ -46,6 +46,7 @@ registry.shuttle-cloud.com:5000/slaheddinne.ahmed/logstash-shuttle
 |Logs version| shuttle vesions |
 |--|--|
 | v01|  shuttle 4.5+ |
+| v02|  shuttle 4.10+ |
 ## Getting Started
 
 These instructions will get you a copy of the project on your local machine for development and testing purposes.

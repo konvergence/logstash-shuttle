@@ -10,7 +10,7 @@ The image is aimed to be used along side a Shuttle server and shares it's log di
 
 ```yaml
 
-registry.shuttle-cloud.com:5000/slaheddinne.ahmed/logstash-shuttle
+konvergence/logstash-shuttle
 
 ```
 

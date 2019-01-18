@@ -36,7 +36,7 @@ services:
       DB_SHUTTLE_PASSWORD: password
       DB_SHUTTLE_REPO: SHUT_REPO
       DB_SHUTTLE_USER: shuttle
-      DB_SYSTEM_PASSWORD: mysecretpassword
+      DB_SYSTEM_PASSWORD: changeitalso
       DB_SYSTEM_USER: postgres
       EXTERNAL_URL_PORT: '443'
       EXTERNAL_URL_PROTOCOL: https
@@ -53,7 +53,7 @@ services:
     image: postgres:9.5.9
     environment:
       PGDATA: /var/lib/postgresql/data
-      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_PASSWORD: changeitalso
       POSTGRES_USER: postgres
     stdin_open: true
     volumes:

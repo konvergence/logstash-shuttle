@@ -2,13 +2,19 @@ input {
 
    file {
 	path => "${LOG_BASE_DIR}/${AUDIT_FILES}*"
+    codec => multiline {
+      # any line not starting with "http-nio-.*"; should be merged with the previous line
+      pattern => "^\"http-nio-.*\";"
+      negate => true
+      what => "previous"
+    }
 	start_position => "beginning"
 	type => "audit"
 		
 	# in  SINCE_DB is 'sincedb_path => "/dev/null"', then logstash restart parse on all files
 	${SINCE_DB}
    }
-   
+  
    file {
 	  path => "${LOG_BASE_DIR}/${USERS_FILES}*"
 	  start_position => "beginning"

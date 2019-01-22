@@ -3,8 +3,9 @@ input {
    file {
 	path => "${LOG_BASE_DIR}/${AUDIT_FILES}*"
     codec => multiline {
-      # any line  starting with ";" should be merged with the previous line
-      pattern => "^\";\""
+      # any line not starting ^\"[a-zA-Z0-9\_\-]+-[0-9]+\";  is a previous line
+      pattern => "^\"[a-zA-Z0-9\_\-]+-[0-9]+\";"
+	  negate => true
       what => "previous"
     }
 	start_position => "beginning"
@@ -101,7 +102,7 @@ filter {
 	ruby { code => "event.set('DURATION', Time.at(event.get('DURATION_S')).utc.strftime('%H:%M:%S'))" }
 	 
      }
-     if [type] == "users"{ 
+    if [type] == "users"{ 
 		
         # warning : if TZ is not CEST, the filename must contain the TZ info. But not implemented yet
         grok { match => ["path", "(?<ADDED_DATE>%{YEAR}-%{MONTHNUM}-%{MONTHDAY}_%{HOUR}-%{MINUTE}-%{SECOND})"]	} # get info form filename

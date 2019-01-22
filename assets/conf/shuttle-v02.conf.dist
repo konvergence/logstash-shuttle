@@ -3,8 +3,9 @@ input {
    file {
 	path => "${LOG_BASE_DIR}/${AUDIT_FILES}*"
     codec => multiline {
-      # any line  starting with ";" should be merged with the previous line
-      pattern => "^\";\""
+      # any line not starting ^\"[a-zA-Z0-9\_\-]+-[0-9]+\";  is a previous line
+      pattern => "^\"[a-zA-Z0-9\_\-]+-[0-9]+\";"
+	  negate => true
       what => "previous"
     }
 	start_position => "beginning"

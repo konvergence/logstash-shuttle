@@ -3,9 +3,8 @@ input {
    file {
 	path => "${LOG_BASE_DIR}/${AUDIT_FILES}*"
     codec => multiline {
-      # any line not starting with "http-nio-.*"; should be merged with the previous line
-      pattern => "^\"http-nio-.*\";"
-      negate => true
+      # any line  starting with ";" should be merged with the previous line
+      pattern => "^\";\""
       what => "previous"
     }
 	start_position => "beginning"

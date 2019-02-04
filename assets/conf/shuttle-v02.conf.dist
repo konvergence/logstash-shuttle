@@ -31,34 +31,71 @@ filter {
     if [message] =~ /^\s*$/ { drop { } } #drop events null rows
 
     if [type] == "audit"{
-	mutate {
-		gsub => ["message", "^'", ""]   # remove ' if exist on first char
-	}
-	fingerprint {
-		source => "message"
-		target => "fingerprint"
-		method => "SHA1"
-		key => "shuttle $ audit "  # keypassphrase to generate the fingerprint SHA1, dot not changeit
-		base64encode => true
-	}
-        csv {   # define audit csv file, headers, with additionnal columns from logstash :"DURATION","fingerprint","CLIENT","FORMATED_START_DATE","FORMATED_END_DATE"
-		separator => ";"
-		columns => ["THREAD","SESSION","IP","USER","LANG","ORIGIN","START_DATE","END_DATE","STATUS","ERROR","CALL","REPO","PROJECT","TARGET","PARAMS","DURATION_S","DURATION","fingerprint","CLIENT","FORMATED_START_DATE","FORMATED_END_DATE"]
-		remove_field => ["message"] # remove the full message source
-	}
-
-        if ( "Invalid credentials" in [ERROR] ){ # grafana does not allow to filter tag '' value , so replace '' by 'null'
 	    mutate {
-		replace => ["SESSION",'null']
-	        replace => ["USER",'null']
-		replace => ["IP",'null']
-	        replace => ["ORIGIN",'null']
-		replace => ["REPO",'null']
-	        replace => ["PROJECT",'null']
-	        replace => ["TARGET",'null']
-	        replace => ["PARAMS",'null']
-		}
-	}
+	    	gsub => ["message", "^'", ""]   # remove ' if exist on first char
+	    }
+	    fingerprint {
+	    	source => "message"
+	    	target => "fingerprint"
+	    	method => "SHA1"
+	    	key => "shuttle $ audit "  # keypassphrase to generate the fingerprint SHA1, dot not changeit
+	    	base64encode => true
+	    }
+            csv {   # define audit csv file, headers, with additionnal columns from logstash :"DURATION","fingerprint","CLIENT","FORMATED_START_DATE","FORMATED_END_DATE"
+	    	separator => ";"
+	    	columns => ["THREAD","SESSION","IP","USER","LANG","ORIGIN","START_DATE","END_DATE","STATUS","ERROR","CALL","REPO","PROJECT","TARGET","PARAMS","DURATION_S","DURATION","fingerprint","CLIENT","FORMATED_START_DATE","FORMATED_END_DATE"]
+	    	remove_field => ["message"] # remove the full message source
+	    }
+	    
+	    # grafana does not allow to filter tag '' value , so replace '' by 'null'
+	    if ! [SESSION] {
+	    	mutate {
+	    	     replace => ["SESSION",'null']
+	    	}
+	    }
+	    
+	    if ! [USER] {
+	    	mutate {
+	    	     replace => ["USER",'null']
+	    	}
+	    }
+        
+	    if ! [IP] {
+	    	mutate {
+	    	     replace => ["IP",'null']
+	    	}
+	    }
+	    
+	    if ! [ORIGIN] {
+	    	mutate {
+	    	     replace => ["ORIGIN",'null']
+	    	}
+	    }
+        
+	    if ! [REPO] {
+	    	mutate {
+	    	     replace => ["REPO",'null']
+	    	}
+	    }
+        
+	    if ! [PROJECT] {
+	    	mutate {
+	    	     replace => ["PROJECT",'null']
+	    	}
+	    }
+	    if ! [TARGET] {
+	    	mutate {
+	    	     replace => ["TARGET",'null']
+	    	}
+	    }
+	    if ! [PARAMS] {
+	    	mutate {
+	    	     replace => ["PARAMS",'null']
+	    	}
+	    }
+		
+		
+
         if ( "CEST" in [START_DATE]){ # Some logs can be in Center Europe Summer Time, so write it in CET +0200
 
 		mutate { # 'Jan 6, 2018 12:50:16 AM CEST' become 'Jan 6, 2018 12:50:16 AM +0200'
@@ -97,9 +134,9 @@ filter {
             }
        }
 	
-	mutate { replace => ["CLIENT","${STACK_CLIENT}"] }
-	ruby { code => "event.set('DURATION_S', event.get('END_DATE') - event.get('START_DATE'))" }  # date diff to compute duration in secondes 
-	ruby { code => "event.set('DURATION', Time.at(event.get('DURATION_S')).utc.strftime('%H:%M:%S'))" }
+	    mutate { replace => ["CLIENT","${STACK_CLIENT}"] }
+	    ruby { code => "event.set('DURATION_S', event.get('END_DATE') - event.get('START_DATE'))" }  # date diff to compute duration in secondes 
+	    ruby { code => "event.set('DURATION', Time.at(event.get('DURATION_S')).utc.strftime('%H:%M:%S'))" }
 	 
      }
      if [type] == "users"{ 
@@ -109,7 +146,7 @@ filter {
         mutate { replace => ["ADDED_DATE","%{ADDED_DATE} +0200"] } # Add CEST timezone for declared users 
 	   
         csv { # define user csv file, headers, with additionnal columns from logstash: "ADDED_DATE","COUNT","CLIENT"
-			separator => ","
+			separator => ";"
 			columns => ["USER","ADDED_DATE","COUNT","CLIENT"]
 			remove_field => ["message"]
         }

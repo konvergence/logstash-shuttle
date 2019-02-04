@@ -47,18 +47,52 @@ filter {
 		remove_field => ["message"] # remove the full message source
 	}
 
-        if ( "Invalid credentials" in [ERROR] ){ # grafana does not allow to filter tag '' value , so replace '' by 'null'
-	    mutate {
-		replace => ["SESSION",'null']
-	        replace => ["USER",'null']
-		replace => ["IP",'null']
-	        replace => ["ORIGIN",'null']
-		replace => ["REPO",'null']
-	        replace => ["PROJECT",'null']
-	        replace => ["TARGET",'null']
-	        replace => ["PARAMS",'null']
-		}
-	}
+	    # grafana does not allow to filter tag '' value , so replace '' by 'null'
+	    if ! [SESSION] {
+	    	mutate {
+	    	     replace => ["SESSION",'null']
+	    	}
+	    }
+	    
+	    if ! [USER] {
+	    	mutate {
+	    	     replace => ["USER",'null']
+	    	}
+	    }
+        
+	    if ! [IP] {
+	    	mutate {
+	    	     replace => ["IP",'null']
+	    	}
+	    }
+	    
+	    if ! [ORIGIN] {
+	    	mutate {
+	    	     replace => ["ORIGIN",'null']
+	    	}
+	    }
+        
+	    if ! [REPO] {
+	    	mutate {
+	    	     replace => ["REPO",'null']
+	    	}
+	    }
+        
+	    if ! [PROJECT] {
+	    	mutate {
+	    	     replace => ["PROJECT",'null']
+	    	}
+	    }
+	    if ! [TARGET] {
+	    	mutate {
+	    	     replace => ["TARGET",'null']
+	    	}
+	    }
+	    if ! [PARAMS] {
+	    	mutate {
+	    	     replace => ["PARAMS",'null']
+	    	}
+	    }
         if ( "CEST" in [START_DATE]){ # Some logs can be in Center Europe Summer Time, so write it in CET +0200
 
 		mutate { # 'Jan 6, 2018 12:50:16 AM CEST' become 'Jan 6, 2018 12:50:16 AM +0200'

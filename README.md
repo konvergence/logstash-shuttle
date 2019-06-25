@@ -102,6 +102,5 @@ I use [Github]([https://github.com/](https://github.com/)) for versioning. For t
 
 ## Authors
 
-* **Slaheddinne Ahmed**
+* **kShuttle infra team**
 
-Contact : [slaheddinne.ahmed@kshuttle.io](mailto:slaheddinne.ahmed@kshuttle.io)

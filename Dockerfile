@@ -1,7 +1,5 @@
 FROM logstash:5.6.16
 
-MAINTAINER Slaheddinne Ahmed, slaheddinne.ahmed@kshuttle.io
-
 # Image Label
 LABEL maintainer="kshuttle.io" \
       description="logstash for shuttle logs" \

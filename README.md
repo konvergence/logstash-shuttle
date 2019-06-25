@@ -47,6 +47,7 @@ konvergence/logstash-shuttle
 |--|--|
 | v01|  shuttle 4.5+ |
 | v02|  shuttle 4.10+ |
+| v03|  shuttle 4.10+ with geoip infos|
 ## Getting Started
 
 These instructions will get you a copy of the project on your local machine for development and testing purposes.
@@ -101,4 +102,6 @@ I use [Github]([https://github.com/](https://github.com/)) for versioning. For t
 
 ## Authors
 
-kshuttle.io
+* **Slaheddinne Ahmed**
+
+Contact : [slaheddinne.ahmed@kshuttle.io](mailto:slaheddinne.ahmed@kshuttle.io)

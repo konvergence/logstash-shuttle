@@ -58,6 +58,27 @@ These instructions will get you a copy of the project on your local machine for 
 
 --Grafana running server for data viz.
 
+### warning about geoip
+before send any data, you must define mapping type of geoip into the index
+
+                    "geoip": {
+                        "dynamic": true,
+                        "properties": {
+                            "ip": {
+                                "type": "ip"
+                            },
+                            "latitude": {
+                                "type": "half_float"
+                            },
+                            "location": {
+                                "type": "geo_point"
+                            },
+                            "longitude": {
+                                "type": "half_float"
+                            }
+                        }
+                    }
+
 ### Installing
 
 A step by step series of examples that tell you have to get a development env running

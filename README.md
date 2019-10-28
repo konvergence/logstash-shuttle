@@ -28,7 +28,7 @@ konvergence/logstash-shuttle
 |--|--|--|
 | `STACK_CLIENT`| Identifies a client logs. |`mystack` |
 | `SINCE_DB`| Set it to `sincedb_path => "/dev/null"` to force logstash-shuttle to read files from the begining even if they have been seen already.|
-| `LOG_VERSION`| Specifies logs version. |`v01`|
+| `LOG_VERSION`| Specifies logs version. |`v04`|
 | `LOG_BASE_DIR`| Specifies the directory where logs are located in shuttle volume .|`/data/shuttle/home/logs`.|
 | `AUDIT_FILES`| Specifies the audit file(s) to be parsed/treated. you can use regex . LOG_BASE_DIR/AUDIT_FILES|`audit/ShuttleAudit.csv`|
 | `USERS_FILES`|Specifies users declared file(s) to be parsed/treated. you can use regex. LOG_BASE_DIR/USERS_FILES|`users/users`|

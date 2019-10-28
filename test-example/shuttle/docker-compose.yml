@@ -4,7 +4,7 @@ volumes:
   shuttle-data: {}
 services:
   logstash:
-    image: registry.shuttle-cloud.com:5000/slaheddinne.ahmed/logstash-shuttle
+    image: konvergence/logstash-shuttle:2.6
     environment:
       EL_HOST: es
       EL_PORT: 9243
@@ -13,10 +13,8 @@ services:
       EL_PASSWORD: logstash 
       EL_SSL: 'true' 
       EL_SSL_VERIF_CERT: 'false'
-      LOG_VERSION: v01
+      LOG_VERSION: v04
       LOG_BASE_DIR: /data/shuttle/home/logs 
-      AUDIT_FILES: audit/ShuttleAudit.csv 
-      USERS_FILES: users/users 
       OUTPUT_ONLY: 'false' 
     networks:
       - default
@@ -28,9 +26,9 @@ services:
     command:
     - --run
   shuttle:
-    image: registry.shuttle-cloud.com:5000/shuttle:4.7.0
+    image: konvergence/shuttle:4.11.0
     environment:
-      CATALINA_OPTS: -Xms512m -Xmx8192m -XX:MaxPermSize=256m -Dfile.encoding=UTF-8 -Djava.awt.headless=true
+      CATALINA_OPTS: -Xms512m -Xmx8192m -Dfile.encoding=UTF-8 -Djava.awt.headless=true
       DB_HOST: postgres95
       DB_PORT: '5432'
       DB_SHUTTLE_PASSWORD: password

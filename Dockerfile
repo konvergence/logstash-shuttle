@@ -32,18 +32,26 @@ COPY README.md    /config-dir/
 ENV STACK_CLIENT=mystack \
     EL_HOST=es \
     EL_PORT=9200 \
-    EL_INDEX=staging_prod \
+    EL_INDEX=shuttle- \
+    EL_INDEX_SUFFIX=-%{+YYYY.MM.dd} \
     EL_USER=logstash \
     EL_PASSWORD=logstash \
     EL_SSL=true \
     EL_SSL_VERIF_CERT=false\
-    LOG_VERSION=v03 \
+    LOG_VERSION=v04 \
     LOG_BASE_DIR=/data/shuttle/home/logs \
     AUDIT_FILES=audit/ShuttleAudit.csv \
     USERS_FILES=users/users \
     OUTPUT_ONLY=false \
+    OUTPUT_MODE=elasticsearch \
     SINCE_DB= \
-    LOGSTASH_OPTIONS=
+    SHUTTLE_FILES=Shuttle.log \
+    LOGSTASH_OPTIONS= \
+    KAFKA_SERVER=kafka:9092
+
+
+
+
             
 WORKDIR /config-dir
 #VOLUME [ "/config-dir" ]

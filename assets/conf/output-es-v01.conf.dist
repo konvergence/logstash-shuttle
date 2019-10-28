@@ -1,0 +1,33 @@
+output{
+
+    # debug only to stdout
+    if "${OUTPUT_ONLY}" == "true" or  "${OUTPUT_MODE}" == "stdout" {
+        stdout{codec => rubydebug}
+
+    }
+    else {  # output elasticsearch
+        if [type] == "audit" {
+            elasticsearch{
+                ssl => ${EL_SSL}
+                ssl_certificate_verification => ${EL_SSL_VERIF_CERT}
+                hosts => "${EL_HOST}:${EL_PORT}"
+                index => "${EL_INDEX}audit${EL_INDEX_SUFFIX}"
+                document_id =>"%{fingerprint}"
+                user => ${EL_USER} # logstash user for elasticsearch
+                password=>${EL_PASSWORD} #logstash password for elasticsearch
+            }
+        }
+        else { # [type] == "users"
+            elasticsearch{
+             ssl => ${EL_SSL}
+             ssl_certificate_verification => ${EL_SSL_VERIF_CERT}
+             hosts => "${EL_HOST}:${EL_PORT}"
+             index => "${EL_INDEX}users${EL_INDEX_SUFFIX}"
+             document_id =>"%{fingerprint}"
+             document_type =>"audit" # force to store tags users into the same index  _type  like audit to allow dashboard
+             user => ${EL_USER} # logstash user for elasticsearch
+             password=>${EL_PASSWORD} #logstash password for elasticsearch
+            }
+        }
+    }
+}

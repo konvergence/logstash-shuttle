@@ -18,7 +18,7 @@ RUN apt-get update \
 # put GeoLite2 database
 COPY /GeoLite2/ /GeoLite2/
 RUN echo "### get last GeoLite2-City database" \
-      && tar -zxvf /GeoLite2/GeoLite2-City.tar.gz  -C /tmp \
+      && tar -zxvf /GeoLite2/GeoLite2-City_20201027.tar.gz  -C /tmp \
       && cd  /tmp/GeoLite2-City_* \
       && mkdir /config-dir/ \
       && mv GeoLite2-City.mmdb /config-dir/ \

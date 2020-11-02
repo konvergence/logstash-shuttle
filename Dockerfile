@@ -7,12 +7,6 @@ LABEL maintainer="kshuttle.io" \
 
 RUN apt-get update \
     && apt-get install -y gettext-base \
-  && echo "### get last GeoLite2-City database" \
-    && curl -s -L https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz -o /tmp/GeoLite2-City.tar.gz \
-    && tar -zxvf /tmp/GeoLite2-City.tar.gz  -C /tmp \
-    && cd  /tmp/GeoLite2-City_* \
-    && mkdir /config-dir/ \
-    && mv GeoLite2-City.mmdb /config-dir/ \
   && echo "#### clean " \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
@@ -20,6 +14,15 @@ RUN apt-get update \
 
 
 
+
+# put GeoLite2 database
+COPY /GeoLite2/ /GeoLite2/
+RUN echo "### get last GeoLite2-City database" \
+      && tar -zxvf /GeoLite2/GeoLite2-City.tar.gz  -C /tmp \
+      && cd  /tmp/GeoLite2-City_* \
+      && mkdir /config-dir/ \
+      && mv GeoLite2-City.mmdb /config-dir/ \
+      && rm -rf /tmp/*
 
 COPY /assets/conf/ /config-dir/
 COPY README.md    /config-dir/
@@ -52,10 +55,9 @@ ENV STACK_CLIENT=mystack \
 
 
 
-            
+
 WORKDIR /config-dir
 #VOLUME [ "/config-dir" ]
 COPY /bin/entrypoint.sh /bin/entrypoint.sh
 ENTRYPOINT ["/bin/entrypoint.sh"]
 CMD ["--help"]
-

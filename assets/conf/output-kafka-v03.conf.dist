@@ -10,7 +10,7 @@ output{
             kafka {
               codec => json
               bootstrap_servers => "${KAFKA_SERVER}"
-              topic_id => "shuttle-audit"
+              topic_id => "shuttle-audits"
               acks => "1"
               compression_type => "gzip"
             }
@@ -19,7 +19,7 @@ output{
             kafka {
               codec => json
               bootstrap_servers => "${KAFKA_SERVER}"
-              topic_id => "shuttle-user"
+              topic_id => "shuttle-users"
               acks => "1"
               compression_type => "gzip"
             }

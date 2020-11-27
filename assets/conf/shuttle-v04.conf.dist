@@ -164,6 +164,7 @@ filter {
             source => "IP"
             database => "/config-dir/GeoLite2-City.mmdb"
         }
+
      }
 
      if [type] == "users"{
@@ -240,15 +241,3 @@ filter {
      # remove some internal tags, not usable for us , unless we have multiple host
      mutate { remove_field => [ "host", "@version" ] }
 }
-
-
-
-
-
-
-
-
-  
-
-
-

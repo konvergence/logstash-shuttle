@@ -11,7 +11,7 @@ output{
                 ssl => ${EL_SSL}
                 ssl_certificate_verification => ${EL_SSL_VERIF_CERT}
                 hosts => "${EL_HOST}:${EL_PORT}"
-                index => "${EL_INDEX}audit${EL_INDEX_SUFFIX}"
+                index => "${EL_INDEX}"
                 document_id =>"%{fingerprint}"
                 user => ${EL_USER} # logstash user for elasticsearch
                 password=>${EL_PASSWORD} #logstash password for elasticsearch
@@ -22,7 +22,7 @@ output{
              ssl => ${EL_SSL}
              ssl_certificate_verification => ${EL_SSL_VERIF_CERT}
              hosts => "${EL_HOST}:${EL_PORT}"
-             index => "${EL_INDEX}users${EL_INDEX_SUFFIX}"
+             index => "${EL_INDEX}"
              document_id =>"%{fingerprint}"
              document_type =>"audit" # force to store tags users into the same index  _type  like audit to allow dashboard
              user => ${EL_USER} # logstash user for elasticsearch

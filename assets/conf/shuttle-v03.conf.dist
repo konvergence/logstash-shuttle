@@ -10,19 +10,19 @@ input {
     }
     start_position => "beginning"
     type => "audit"
-        
+
     # in  SINCE_DB is 'sincedb_path => "/dev/null"', then logstash restart parse on all files
     ${SINCE_DB}
    }
-  
+
    file {
       path => "${LOG_BASE_DIR}/${USERS_FILES}*"
       start_position => "beginning"
       type => "users"
-      
+
       # in  SINCE_DB is 'sincedb_path => "/dev/null"', then logstash restart parse on all files
       ${SINCE_DB}
-      
+
    }
 
 }
@@ -48,38 +48,38 @@ filter {
             columns => ["THREAD","SESSION","IP","USER","LANG","ORIGIN","START_DATE","END_DATE","STATUS","ERROR","CALL","REPO","PROJECT","TARGET","PARAMS","DURATION_S","DURATION","fingerprint","CLIENT","FORMATED_START_DATE","FORMATED_END_DATE"]
             remove_field => ["message"] # remove the full message source
         }
-        
+
         # grafana does not allow to filter tag '' value , so replace '' by 'null'
         if ! [SESSION] {
             mutate {
                  replace => ["SESSION",'null']
             }
         }
-        
+
         if ! [USER] {
             mutate {
                  replace => ["USER",'null']
             }
         }
-        
+
         if ! [IP] {
             mutate {
                  replace => ["IP",'null']
             }
         }
-        
+
         if ! [ORIGIN] {
             mutate {
                  replace => ["ORIGIN",'null']
             }
         }
-        
+
         if ! [REPO] {
             mutate {
                  replace => ["REPO",'null']
             }
         }
-        
+
         if ! [PROJECT] {
             mutate {
                  replace => ["PROJECT",'null']
@@ -95,8 +95,8 @@ filter {
                  replace => ["PARAMS",'null']
             }
         }
-        
-        
+
+
 
         if ( "CEST" in [START_DATE]){ # Some logs can be in Center Europe Summer Time, so write it in CET +0200
 
@@ -104,8 +104,8 @@ filter {
             gsub => ["START_DATE", "CEST", "+0200"]
             gsub => ["END_DATE", "CEST", "+0200"]
         }
-           
-        date { #Jan 6, 2018 12:50:16 AM +0200 is converted from string type into universal date for elasticsearch 
+
+        date { #Jan 6, 2018 12:50:16 AM +0200 is converted from string type into universal date for elasticsearch
             match => ["START_DATE","MMM dd, YYYY hh:mm:ss aa Z"]
             target => "START_DATE"
         }
@@ -113,46 +113,46 @@ filter {
             match => ["END_DATE","MMM dd, YYYY hh:mm:ss aa Z"]
             target => "END_DATE"
         }
-        
+
         } else if (  "CET" in [START_DATE]){
-        date {    #Jan 6, 2018 12:50:16 AM CET    
+        date {    #Jan 6, 2018 12:50:16 AM CET
             match => ["START_DATE","MMM dd, YYYY hh:mm:ss aa ZZZ"]
             target => "START_DATE"
         }
-        
+
         date {
             match => ["END_DATE","MMM dd, YYYY hh:mm:ss aa ZZZ"]
             target => "END_DATE"
         }
-         
+
         } else { # ISO8601 : 2018-11-20 11:10:06+01:00
-            date { 
+            date {
                      match => [ "START_DATE", "YYYY-MM-dd HH:mm:ssZZ" ]
                      target => "START_DATE"
             }
-            date { 
+            date {
                      match => [ "END_DATE", "YYYY-MM-dd HH:mm:ssZZ" ]
                      target => "END_DATE"
             }
         }
-    
+
         mutate { replace => ["CLIENT","${STACK_CLIENT}"] }
-        ruby { code => "event.set('DURATION_S', event.get('END_DATE') - event.get('START_DATE'))" }  # date diff to compute duration in secondes 
+        ruby { code => "event.set('DURATION_S', event.get('END_DATE') - event.get('START_DATE'))" }  # date diff to compute duration in secondes
         ruby { code => "event.set('DURATION', Time.at(event.get('DURATION_S')).utc.strftime('%H:%M:%S'))" }
-        
+
         # add geoip informations
-        geoip { 
+        geoip {
             source => "IP"
             database => "/config-dir/GeoLite2-City.mmdb"
         }
      }
-     
-     if [type] == "users"{ 
-        
+
+     if [type] == "users"{
+
         # warning : if TZ is not CEST, the filename must contain the TZ info. But not implemented yet
         grok { match => ["path", "(?<ADDED_DATE>%{YEAR}-%{MONTHNUM}-%{MONTHDAY}_%{HOUR}-%{MINUTE}-%{SECOND})"]    } # get info form filename
-        mutate { replace => ["ADDED_DATE","%{ADDED_DATE} +0200"] } # Add CEST timezone for declared users 
-       
+        mutate { replace => ["ADDED_DATE","%{ADDED_DATE} +0200"] } # Add CEST timezone for declared users
+
         csv { # define user csv file, headers, with additionnal columns from logstash: "ADDED_DATE","COUNT","CLIENT"
             separator => ";"
             columns => ["USER","ADDED_DATE","COUNT","CLIENT"]
@@ -161,8 +161,8 @@ filter {
 
         mutate { replace => ["CLIENT","${STACK_CLIENT}"] }
         mutate { replace => ["COUNT", 0] }
-    #mutate { replace => ["type",'audit'] } 
-        
+    #mutate { replace => ["type",'audit'] }
+
     date{         # Convert ADDED_DATE from string  into date type
         match => ["ADDED_DATE","YYYY-MM-dd_HH-mm-ss Z"]
         target => "ADDED_DATE"
@@ -171,6 +171,3 @@ filter {
      # remove some internal tags, not usable for us , unless we have multiple host
      mutate { remove_field => [ "host", "@version" ] }
 }
-
-
-

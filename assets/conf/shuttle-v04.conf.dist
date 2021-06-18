@@ -230,6 +230,7 @@ filter {
 
         date {
           match => [ "timestamp" , "yyyy-MM-dd HH:mm:ss,SSS" ]
+          timezone =>"${TZ}"
         }
 
         mutate {

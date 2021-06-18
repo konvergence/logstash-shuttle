@@ -53,7 +53,7 @@ These instructions will get you a copy of the project on your local machine for 
 
 #### changelogs
 2.7 : use logstash:5.6.16  and give v04 config
-2.8 : use logstash:5.6.16  and give v05 config (issue with logstash:7.13.1 )
+2.8 : use logstash:5.6.16  update give v04 config with TZ (issue with logstash:7.13.1 )
 
 
 #### Logs versions & shuttle compatibility
@@ -64,7 +64,6 @@ These instructions will get you a copy of the project on your local machine for 
 | v02|  shuttle 4.10+ audit logs|
 | v03|  shuttle 4.10+ audit logs with geoip infos|
 | v04|  shuttle 4.10+ audit logs with geoip infos and shuttle logs, allow output to kafka or elasticsearch|
-| v05|  shuttle 4.10+ audit logs with geoip infos and shuttle logs, allow output to kafka or elasticsearch, use TZ value for shuttle-logs |
 
 ## Getting Started
 

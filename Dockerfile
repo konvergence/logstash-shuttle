@@ -1,10 +1,14 @@
 FROM logstash:5.6.16
+#FROM logstash:7.13.1
 
 # Image Label
 LABEL maintainer="kshuttle.io" \
       description="logstash for shuttle logs" \
       release="5.6.16"
 
+#USER root
+
+# package for logstash:5.6.16
 RUN apt-get update \
     && apt-get install -y gettext-base \
   && echo "#### clean " \
@@ -13,6 +17,13 @@ RUN apt-get update \
     && rm -rf /tmp/*
 
 
+# package for logstash:7.13.1
+#RUN yum update -y  \
+#    && yum install -y gettext \
+#&& echo "#### clean " \
+#    && yum clean all \
+#    && rm -rf /var/cache/yum \
+#    && rm -rf /tmp/*
 
 
 # put GeoLite2 database
@@ -26,6 +37,13 @@ RUN echo "### get last GeoLite2-City database" \
 
 COPY /assets/conf/ /config-dir/
 COPY README.md    /config-dir/
+
+#COPY /assets/logstash/logstash.yml /usr/share/logstash/config/logstash.yml
+
+
+# update permissions
+#RUN chown logstash /config-dir/
+
 
 
 
@@ -41,7 +59,7 @@ ENV STACK_CLIENT=mystack \
     EL_PASSWORD=logstash \
     EL_SSL=true \
     EL_SSL_VERIF_CERT=false\
-    LOG_VERSION=v04 \
+    LOG_VERSION=v05 \
     LOG_BASE_DIR=/data/shuttle/home/logs \
     AUDIT_FILES=audit/ShuttleAudit.csv \
     USERS_FILES=users/users \
@@ -50,9 +68,10 @@ ENV STACK_CLIENT=mystack \
     SINCE_DB= \
     SHUTTLE_FILES=Shuttle.log \
     LOGSTASH_OPTIONS= \
-    KAFKA_SERVER=kafka:9092
+    KAFKA_SERVER=kafka:9092 \
+    TZ=Europe/Paris
 
-
+#USER logstash
 
 
 

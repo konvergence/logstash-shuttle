@@ -1,0 +1,46 @@
+output{
+
+    # debug only to stdout
+    if "${OUTPUT_ONLY}" == "true" or  "${OUTPUT_MODE}" == "stdout" {
+        stdout{codec => rubydebug}
+
+    }
+    else {  # output elasticsearch
+        if [type] == "audit" {
+            elasticsearch{
+                ssl => ${EL_SSL}
+                ssl_certificate_verification => ${EL_SSL_VERIF_CERT}
+                hosts => "${EL_HOST}:${EL_PORT}"
+                index => "${EL_INDEX}audits${EL_INDEX_SUFFIX}"
+                document_id =>"%{fingerprint}"
+                document_type => "_doc"
+                user => ${EL_USER} # logstash user for elasticsearch
+                password=>${EL_PASSWORD} #logstash password for elasticsearch
+            }
+        }
+        else if [type] == "users" {
+            elasticsearch{
+             ssl => ${EL_SSL}
+             ssl_certificate_verification => ${EL_SSL_VERIF_CERT}
+             hosts => "${EL_HOST}:${EL_PORT}"
+             index => "${EL_INDEX}users${EL_INDEX_SUFFIX}"
+             document_id =>"%{fingerprint}"
+             document_type =>"_doc"
+             user => ${EL_USER} # logstash user for elasticsearch
+             password=>${EL_PASSWORD} #logstash password for elasticsearch
+            }
+        }
+        else { # shuttle type
+            elasticsearch{
+             ssl => ${EL_SSL}
+             ssl_certificate_verification => ${EL_SSL_VERIF_CERT}
+             hosts => "${EL_HOST}:${EL_PORT}"
+             document_id =>"%{fingerprint}"
+             document_type => "_doc"
+             index => "${EL_INDEX}logs${EL_INDEX_SUFFIX}"
+             user => ${EL_USER} # logstash user for elasticsearch
+             password=>${EL_PASSWORD} #logstash password for elasticsearch
+            }
+        }
+    }
+}

@@ -5,7 +5,13 @@ set -ex
 #PARENT_DIR=$(basename "${PWD%/*}")
 CURRENT_DIR="${PWD##*/}"
 IMAGE_NAME="$CURRENT_DIR"
-TAG="${1}"
+
+if [ $# -lt 1 ]; then
+    read -p "TAG ?:" TAG
+else
+   TAG="${1}"
+fi
+
 
 REGISTRY="konvergence"
 

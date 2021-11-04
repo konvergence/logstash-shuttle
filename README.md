@@ -28,9 +28,10 @@ konvergence/logstash-shuttle
 |--|--|--|
 | `STACK_CLIENT`| Identifies a client logs. |`mystack` |
 | `SINCE_DB`| Set it to `sincedb_path => "/dev/null"` to force logstash-shuttle to read files from the begining even if they have been seen already.|
-| `LOG_VERSION`| Specifies logs version. |`v04`|
+| `LOG_VERSION`| Specifies logs version. |`v05`|
 | `LOG_BASE_DIR`| Specifies the directory where logs are located in shuttle volume .|`/data/shuttle/home/logs`.|
 | `AUDIT_FILES`| Specifies the audit file(s) to be parsed/treated. you can use regex . LOG_BASE_DIR/AUDIT_FILES|`audit/ShuttleAudit.csv`|
+| `EXTENDED_AUDIT_FILES`| Specifies the extended audit file(s) to be parsed/treated. you can use regex . LOG_BASE_DIR/AUDIT_FILES|`extendedAudit/`|
 | `USERS_FILES`|Specifies users declared file(s) to be parsed/treated. you can use regex. LOG_BASE_DIR/USERS_FILES|`users/users`|
 | `SHUTTLE_FILES`| Shuttle.log pattern LOG_BASE_DIR/SHUTTLE_FILES|`Shuttle.log`|
 | `OUTPUT_ONLY`| If set to true you will get the logs in the standard output else to elasticsearch. |`false`|
@@ -46,6 +47,21 @@ konvergence/logstash-shuttle
 | `KAFKA_SERVER`| kafaka bootstrap server | `kafka:9092` |
 
 
+### extendedAudit files add 9 column managed by the application jobs
+
+* example
+```
+- EXT01 : fullname
+- EXT02 company rang 1
+- EXT03 company rang 2
+- EXT04 Site
+- EXT05 : module name
+- EXT06 : tab name
+- EXT07 : type risk
+- EXT08 script name
+- EXT09 : POV grid
+```
+
 
 ## Getting Started
 These instructions will get you a copy of the project on your local machine for development and testing purposes.
@@ -54,6 +70,7 @@ These instructions will get you a copy of the project on your local machine for 
 #### changelogs
 2.7 : use logstash:5.6.16  and give v04 config
 2.8 : use logstash:5.6.16  update give v04 config with TZ (issue with logstash:7.13.1 )
+2.9 : allow extenditAudit for Shuttle
 
 
 #### Logs versions & shuttle compatibility
@@ -64,6 +81,7 @@ These instructions will get you a copy of the project on your local machine for 
 | v02|  shuttle 4.10+ audit logs|
 | v03|  shuttle 4.10+ audit logs with geoip infos|
 | v04|  shuttle 4.10+ audit logs with geoip infos and shuttle logs, allow output to kafka or elasticsearch|
+| v05|  shuttle 4.10+ audit logs with geoip infos and shuttle logs, allow output to kafka or elasticsearch, add extendedAudit|
 
 ## Getting Started
 

@@ -1,0 +1,47 @@
+output{
+
+    # debug only to stdout
+    if "${OUTPUT_ONLY}" == "true" or  "${OUTPUT_MODE}" == "stdout" {
+        stdout{codec => rubydebug}
+
+    }
+    else { # output kafka
+        if [type] == "audit" {
+            kafka {
+              codec => json
+              bootstrap_servers => "${KAFKA_SERVER}"
+              topic_id => "shuttle-audits"
+              acks => "1"
+              compression_type => "gzip"
+            }
+        }
+        else if [type] == "extendedaudit" {
+            kafka {
+              codec => json
+              bootstrap_servers => "${KAFKA_SERVER}"
+              topic_id => "shuttle-extended-audits"
+              acks => "1"
+              compression_type => "gzip"
+              max_request_size => 2097152
+            }
+        }
+        else if [type] == "users" {
+            kafka {
+              codec => json
+              bootstrap_servers => "${KAFKA_SERVER}"
+              topic_id => "shuttle-users"
+              acks => "1"
+              compression_type => "gzip"
+            }
+        }
+        else { # type ="shuttle"
+            kafka {
+              codec => json
+              bootstrap_servers => "${KAFKA_SERVER}"
+              topic_id => "shuttle-logs"
+              acks => "1"
+              compression_type => "gzip"
+            }
+        }
+    }
+}
